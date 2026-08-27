@@ -8,7 +8,7 @@ class SiteCreate(BaseModel ):
     longitude: float = Field(ge=-180, le=180)
 class SiteResponse(BaseModel):
     model_config=ConfigDict(from_attributes=True)
-    id:str
+    id:int
     name:str
     location:str
     latitude:float
