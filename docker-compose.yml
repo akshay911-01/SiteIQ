@@ -1,22 +1,22 @@
 services:
-
   postgres:
     image: pgvector/pgvector:pg17
     container_name: siteiq-postgres
     environment:
-      POSTGRES_DB: siteiq
-      POSTGRES_USER: siteiq
-      POSTGRES_PASSWORD: siteiq_password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U siteiq -d siteiq"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
+
 
   redis:
     image: redis:7-alpine
@@ -25,6 +25,8 @@ services:
       - "6379:6379"
 
   backend:
+    env_file:
+      - .env
     build:
       context: ./backend
     container_name: siteiq-backend

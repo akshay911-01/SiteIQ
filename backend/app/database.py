@@ -1,9 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase,sessionmaker
+from app.config import settings
 
 DATABASE_URL = (
-    "postgresql+psycopg://"
-    "siteiq:siteiq_password@postgres:5432/siteiq"
+    f"postgresql+psycopg://"
+    f"{settings.postgres_user}:"
+    f"{settings.postgres_password}@"
+    f"{settings.postgres_host}:"
+    f"{settings.postgres_port}/"
+    f"{settings.postgres_db}"
 )
 engine = create_engine(
     DATABASE_URL,
